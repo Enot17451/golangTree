@@ -6,14 +6,16 @@ import (
 	"os"
 )
 
+const (
+	indent0    = "├───"
+	indent1    = "│\t"
+	indentDown = "└───"
+)
+
 func main() {
 	out := new(bytes.Buffer)
 	dirTree(out, "testdata", true)
 	dirTree(out, "testdata", false)
-}
-
-func takeAll() {
-
 }
 
 func dirTree(out *bytes.Buffer, path string, onlyDirs bool) error {
@@ -23,11 +25,11 @@ func dirTree(out *bytes.Buffer, path string, onlyDirs bool) error {
 	}
 	for _, record := range dir {
 		if record.IsDir() && !onlyDirs {
-			fmt.Println("----" + record.Name())
+			fmt.Println(indent1 + record.Name())
 		} else {
-			fmt.Println(record.Name())
+			fmt.Println(indent0 + record.Name())
 		}
-
+		fmt.Println(indentDown + record.Name())
 	}
 	return nil
 }
