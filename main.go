@@ -18,23 +18,25 @@ func main() {
 	dirTree(out, "testdata", false)
 }
 
-func dirTree(out *bytes.Buffer, path string, onlyDirs bool) error {
+func dirTree(out *bytes.Buffer, path string, withFiles bool) error {
 	dir, er := os.ReadDir("./" + path)
 	if er != nil {
 		return er
 	}
 	for _, record := range dir {
-		if record.IsDir() && !onlyDirs {
-			fmt.Println(indent1 + record.Name())
+		f := record.Name()
+		readDir("/"+f, out)
+		if record.IsDir() && !withFiles {
+
 		} else {
-			fmt.Println(indent0 + record.Name())
+
 		}
-		fmt.Println(indentDown + record.Name())
 	}
+	fmt.Println(out)
 	return nil
 }
 
-func readDir(path string, out *string) error {
+func readDir(path string, out *bytes.Buffer) error {
 	dir, er := os.ReadDir("./" + path)
 	if er != nil {
 		return er
